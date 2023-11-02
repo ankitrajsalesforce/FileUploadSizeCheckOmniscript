@@ -1,6 +1,7 @@
 # FileUploadSizeCheckOmniscript
 
 Description:
+
 This asset contains an LWC, an Apex Trigger and Its Apex Class handler. This component can be used to override the file upload element of Omniscript to apply a file size check.
 
 The current OOTB **file-upload** element/ **lightning-file-upload** lwc doesn't provide an option to check the size before finishing the upload. So the only option we have left is to delete the file if file size doesn't match the expected file size criteria after file upload completion. So ultimately we'll be having 2 DML operation. This will cost more resources and time.
