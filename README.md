@@ -35,7 +35,7 @@ Steps to Install - File Upload Override in Omniscript :
      
   7. Define the number of files upload allowed.
 
-     "numOfFilesAllowed": 2
+     "numOfFilesAllowed": 5
      
   9. Mention "multiple": false/true based on whether we want to allow multiple selection of files.
      
