@@ -1,0 +1,87 @@
+<template>
+    <!-- Spinner -->
+    <template if:true={isPageLoading}>
+      <vlocity_cmt-spinner variant="brand"
+                 alternative-text="Loading..."
+                 theme={_theme}
+                 size="medium">
+      </vlocity_cmt-spinner>
+    </template>
+    <slot>
+      <div class={_containerClasses}>
+        <div>
+          <label class="slds-form-element__label"
+                 aria-label={_propSetMap.label}>
+            <abbr if:true={_propSetMap.required}
+                  class="slds-required"
+                  title="required">*</abbr>
+            <span>{_propSetMap.label}</span>
+          </label>
+          <vlocity_cmt-tooltip if:true={_propSetMap.help}
+                     class="slds-tooltip_container"
+                     content={_propSetMap.helpText}>
+          </vlocity_cmt-tooltip>
+        </div>
+        <div class="slds-grid omni-file-input">
+        <lightning-file-upload label={fileUploadLabel}
+                                name={jsonDef.lwcId}
+                                record-id={recordId}
+                                onuploadfinished={handleUploadFinished}
+                                multiple={multiple}
+                                file-field-name={fieldName}
+                                file-field-value={fieldValue}
+                                data-omni-input
+                                accept={accepts}
+                                disabled={isDisabled}
+                                required
+                                aria-required="true"
+                                aria-describedby="help-text-financial-information-documents"
+                                class="slds-has-dividers_around-space slds-m-bottom_xx-small slds-size_12-of-12 slds-medium-size_12-of-12">
+          </lightning-file-upload>
+          <!-- <lightning-input
+              type="file"
+              name={jsonDef.lwcId}
+              class="slds-has-dividers_around-space omni-file slds-m-bottom_xx-small slds-size_12-of-12 slds-medium-size_12-of-12"
+          >
+          </lightning-input> -->
+        </div>
+        <span if:true={_showValidation}
+              class="slds-form-element__help omni-file-required">
+              {requiredError}
+        </span>
+
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-1 slds-small-size_1-of-1 xeg-m-top_large">
+            <p id="help-text-financial-information-documents" data-id="help-text-financial-information-documents"
+                class="inline-message" data-decoration="help-message">
+                Please do not upload any documents including personal financial information
+            </p>
+        </div>
+      </div>
+    </slot>
+    <slot name="files">
+      <div class="slds-grid">
+        
+        <!-- File list wrapper -->
+        <ul class="list-wrapper slds-size_12-of-12 slds-medium-size_12-of-12">
+          <template for:each={_value} for:item="item" for:index="index">
+            <li key={item.data} class="slds-item" data-record-id={item.data}>
+              <c-xe-os-card display-style="base">
+                  <div class="list-item-content">
+                      <div class="list-item-name-wrapper">
+                          <p class="list-item-file-name">
+                              {item.filename}
+                          </p>
+                      </div>
+                      <div class="remove-button-container">
+                          <a href="#" role="button" tabindex="0" aria-label={item.ariaLabel} data-index={index} data-id={item.data} onclick={deleteFile}>
+                            Remove
+                          </a>
+                      </div>
+                  </div>
+              </c-xe-os-card>
+          </li>
+          </template>
+        </ul>
+      </div>
+    </slot>
+  </template>
