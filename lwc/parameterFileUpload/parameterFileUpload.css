@@ -1,0 +1,34 @@
+
+.list-item {
+    padding-bottom: 1rem;
+}
+
+.list-item-content {
+    display: flex;
+    width: 100%;
+}
+
+.list-item-content a {
+    color: #005F83;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.list-item-content a, .list-item-content p {
+    font-size: 0.9rem;
+}
+
+.list-item-name-wrapper {
+    flex: 5 1 auto;
+}
+
+.icon_container svg.slds-icon[data-icon="file-icon"] {
+    width: 3rem;
+    height: 3rem;
+    position: relative;
+    fill: #000;
+}
+
+.remove-button-container {
+    white-space: nowrap;
+}
