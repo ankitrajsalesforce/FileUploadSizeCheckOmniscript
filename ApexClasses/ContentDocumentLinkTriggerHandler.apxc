@@ -1,0 +1,48 @@
+public without sharing class ContentDocumentLinkTriggerHandler {
+
+    /**
+     * Validates the documents identified by the list of ContentDocumentLink
+     * @param cdls
+     */
+    public static void validateDocuments(List<ContentDocumentLink> cdls) {
+        Set<Id> setCaseId= new Set<Id>();
+        Set<Id> setCDId= new Set<Id>();
+        for (ContentDocumentLink cdl : cdls) {
+            if (cdl.LinkedEntityId.getSobjectType() == Case.SObjectType) {
+                setCaseId.add(cdl.LinkedEntityId);
+                setCDId.add(cdl.ContentDocumentId);
+            }
+            
+        }
+        Map<Id,Case> mapIdCase= new Map<Id,Case>([Select Id,Type__c  from Case where Id IN: setCaseId]);
+        System.debug(setCaseId+' mapIdCase '+mapIdCase);
+        Map<Id,ContentDocument> mapContentDoc = new Map<Id,ContentDocument>([SELECT Id,ContentSize FROM ContentDocument WHERE Id IN: setCDId]);
+        
+        for (ContentDocumentLink cdl : cdls) {
+            if (cdl.LinkedEntityId.getSobjectType() == Case.SObjectType) {
+                System.debug(mapContentDoc.get(cdl.ContentDocumentId).ContentSize+' cdl '+ cdl.LinkedEntityId);
+                validateCaseDocument(cdl,mapContentDoc.get(cdl.ContentDocumentId).ContentSize,mapIdCase.get(cdl.LinkedEntityId).Type__c);
+            }
+        }
+    }
+    
+    /**
+     * Performs validation on a document associated to a Case record
+     * @param cdl
+     * @param context
+     */
+    private static void validateCaseDocument(ContentDocumentLink cdl,Integer size, String type) {
+        //Integer maximumNumberOfDocuments = 0;
+        //List<String> allowedFileTypes = new List<String>();
+        
+		Integer convertMBToBytes = 1048576;
+        Decimal maxSize = 25* convertMBToBytes;
+        Decimal minSize = 0.1* convertMBToBytes;
+        String errorMsg=  'This file is either larger than 25 MB or less than 0.1 MB.';
+        System.debug((size > maxSize) +' size comparison '+ (size <= minSize));
+        System.debug('maxSize: ' + maxSize +' actual size:  '+ size+' minSize: '+ minSize);
+        if (size >= maxSize || size <= minSize){
+            cdl.addError(errorMsg);
+        }
+    }
+}
